@@ -24,8 +24,8 @@ public class Startup
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
-        services.AddTransient<IBlock, Block>();
-        //services.AddSingleton<IBlockchain, Core.Implementations.Blockchain>();
+        //services.AddTransient<IBlockFactory<IBlock>, BlockFactory<Block>>();
+        services.AddSingleton<IBlockchain, Core.Implementations.Blockchain>();
     }
 
     public static void ConfigureHttpPipeline(WebApplication app)
