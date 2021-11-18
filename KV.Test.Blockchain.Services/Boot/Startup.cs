@@ -24,7 +24,7 @@ public class Startup
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
 
-        //services.AddTransient<IBlockFactory<IBlock>, BlockFactory<Block>>();
+        services.AddTransient<IBlockFactory<IBlock>, BlockFactory>();
         services.AddSingleton<IBlockchain, Core.Implementations.Blockchain>();
     }
 

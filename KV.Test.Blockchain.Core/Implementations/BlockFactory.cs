@@ -2,11 +2,12 @@
 
 namespace KV.Test.Blockchain.Core.Implementations;
 
-public class BlockFactory<TBlock> : IBlockFactory<TBlock>
-    where TBlock : Block, new()
+public class BlockFactory : IBlockFactory<IBlock>
 {
-    public TBlock CreateNew()
+    public IBlock CreateNew(Action<IBlock> instanceOptions)
     {
-        return new TBlock();
+        IBlock block = new Block();
+        instanceOptions(block);
+        return block;
     }
 }

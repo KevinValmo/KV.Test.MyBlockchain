@@ -7,26 +7,27 @@ public class Blockchain: IBlockchain
 {
     private List<IBlock> chain = new();
 
-    public Blockchain()
+    public Blockchain(IBlockFactory<IBlock> blockFactory)
     {
-
+        BlockFactory = blockFactory;
     }
 
     public IBlock CreateBlock(ulong proof, HashCode previousHash)
     {
-        // do we need a factory for creating a new block?
-        //IBlock block = new TBlock
-        //{
-        //    Index = (ulong)chain.Count + 1,
-        //    TimeStamp = DateTime.UtcNow,
-        //    Proof = proof,
-        //    PreviousHash = previousHash
-        //};
+        IBlock block = BlockFactory.CreateNew(b =>
+        {
+            b.Index = (ulong)chain.Count + 1;
+            b.TimeStamp = DateTime.UtcNow;
+            b.Proof = proof;
+            b.PreviousHash = previousHash;
+        });
 
-        return new Block();
+        return block;
     }
 
     public IBlock GetPreviousBlock { get { return chain[^1]; } }
+
+    public IBlockFactory<IBlock> BlockFactory { get; }
 
     public ulong ProofOfWork(ulong previousProof)
     {

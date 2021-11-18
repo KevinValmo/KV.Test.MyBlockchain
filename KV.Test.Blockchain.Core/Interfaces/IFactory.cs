@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KV.Test.Blockchain.Core.Interfaces;
 
-public interface IFactory<out TInstanceType>
+public interface IFactory<TInstanceType>
 {
-    TInstanceType CreateNew();
+    TInstanceType CreateNew(Action<TInstanceType> instanceOptions);
 }

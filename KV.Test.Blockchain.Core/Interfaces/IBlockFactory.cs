@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KV.Test.Blockchain.Core.Interfaces;
 
-public interface IBlockFactory<out TBlock> : IFactory<TBlock>
-    where TBlock: IBlock, new()
+public interface IBlockFactory<TBlock> : IFactory<TBlock>
+    where TBlock: IBlock
 {
 }
