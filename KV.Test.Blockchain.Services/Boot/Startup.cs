@@ -1,5 +1,11 @@
 using KV.Test.Blockchain.Core.Implementations;
 using KV.Test.Blockchain.Core.Interfaces;
+using KV.Test.Blockchain.Services.Apis;
+using KV.Test.Blockchain.Services.Apis.Extensions;
+using KV.Test.Blockchain.Services.Apis.Interfaces;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace KV.Test.Blockchain.Services.Boot;
 
@@ -13,33 +19,28 @@ public class Startup
 
         WebApplication? app = builder.Build();
         
-        ConfigureHttpPipeline(app);
+        ConfigureApplication(app);
 
         app.Run();
     }
 
     public static void ConfigureServices(IServiceCollection services)
     {
-        services.AddControllers();
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
-
+        services.AddApi<BlockchainApis>();
+        
         services.AddTransient<IBlockFactory<IBlock>, BlockFactory>();
         services.AddSingleton<IBlockchain, Core.Implementations.Blockchain>();
     }
 
-    public static void ConfigureHttpPipeline(WebApplication app)
+    public static void ConfigureApplication(WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+
         }
 
+        app.MapApis();
+
         app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-        app.MapControllers();
     }
 }

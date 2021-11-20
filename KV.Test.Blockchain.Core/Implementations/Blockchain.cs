@@ -1,4 +1,6 @@
 ﻿using KV.Test.Blockchain.Core.Interfaces;
+using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace KV.Test.Blockchain.Core.Implementations;

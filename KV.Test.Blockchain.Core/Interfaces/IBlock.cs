@@ -1,4 +1,6 @@
-﻿namespace KV.Test.Blockchain.Core.Interfaces;
+﻿using System;
+
+namespace KV.Test.Blockchain.Core.Interfaces;
 
 public interface IBlock
 {
