@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace KV.Test.Blockchain.Services.Apis.Interfaces;
 
 public interface IApi
 {
-    List<string> Map(WebApplication app);
+    void Map(IEndpointRouteBuilder endpointRouteBuilder);
 }

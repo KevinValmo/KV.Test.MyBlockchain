@@ -3,6 +3,7 @@ using KV.Test.Blockchain.Services.Apis.Extensions;
 using KV.Test.Blockchain.Services.Apis.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 
@@ -19,14 +20,9 @@ public class BlockchainApis : IBlockchainApis, IApi
         _blockchain = blockchain;
     }
 
-    public List<string> Map(WebApplication app)
+    public void Map(IEndpointRouteBuilder endpointRouteBuilder)
     {
-        List<string> apis = new List<string>
-        {
-            app.MapApi("api/blockchain/getresult", GetResult)
-        };
-
-        return apis;
+        endpointRouteBuilder.Map("api/blockchain/getresult", GetResult);
     }
 
     public IResult GetResult()

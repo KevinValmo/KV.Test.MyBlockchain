@@ -7,7 +7,7 @@ namespace KV.Test.Blockchain.Core.Implementations;
 
 public class Blockchain: IBlockchain
 {
-    private List<IBlock> chain = new();
+    public IBlockFactory<IBlock> BlockFactory { get; }
 
     public Blockchain(IBlockFactory<IBlock> blockFactory)
     {
@@ -26,10 +26,10 @@ public class Blockchain: IBlockchain
 
         return block;
     }
+    
+    private List<IBlock> chain = new();
 
     public IBlock GetPreviousBlock { get { return chain[^1]; } }
-
-    public IBlockFactory<IBlock> BlockFactory { get; }
 
     public ulong ProofOfWork(ulong previousProof)
     {
