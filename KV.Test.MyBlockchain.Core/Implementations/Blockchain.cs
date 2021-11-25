@@ -2,53 +2,109 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
 namespace KV.Test.MyBlockchain.Core.Implementations;
 
 public class Blockchain : IBlockchain
 {
-    public IBlockFactory<IBlock> BlockFactory { get; }
+    private readonly IBlockFactory<IBlock> _blockFactory;
+    private readonly JsonSerializerOptions jsonSerializerOptions = new();
+    private readonly Func<byte[], byte[]> computeHash;
+
+    public List<IBlock> Chain { get; private set; } = new();
+    public IBlock PreviousBlock { get { return Chain[^1]; } }
 
     public Blockchain(IBlockFactory<IBlock> blockFactory)
     {
-        BlockFactory = blockFactory;
+        _blockFactory = blockFactory;
+        SHA256 sha256 = SHA256.Create();
+        computeHash = sha256.ComputeHash;
+
+        // Genesis block
+        CreateBlock(1, "0");
     }
 
-    public IBlock CreateBlock(ulong proof, HashCode previousHash)
+    public string GetBlockHash(IBlock block)
     {
-        IBlock block = BlockFactory.CreateNew(b =>
+        string hash;
+
+        string serializedBlock = JsonSerializer.Serialize(block, jsonSerializerOptions);
+
+        byte[] hashBytes = computeHash(Encoding.Unicode.GetBytes(serializedBlock));
+
+        hash = Convert.ToHexString(hashBytes);
+
+        return hash;
+    }
+
+    public IBlock CreateBlock(int proof, string previousHash)
+    {
+        IBlock block = _blockFactory.CreateNew(b =>
         {
-            b.Index = (ulong)chain.Count + 1;
+            b.Index = (ulong)Chain.Count + 1;
             b.TimeStamp = DateTime.UtcNow;
             b.Proof = proof;
             b.PreviousHash = previousHash;
         });
 
+        Chain.Add(block);
+
         return block;
     }
 
-    private readonly List<IBlock> chain = new();
-
-    public IBlock GetPreviousBlock { get { return chain[^1]; } }
-
-    public ulong ProofOfWork(ulong previousProof)
+    public int ProofOfWork(int previousProof)
     {
-        ulong newProof = 1;
+        int newProof = 1;
         bool checkProof = false;
 
         while (checkProof == false)
         {
-            ulong toBeWork = newProof ^ 2 - previousProof ^ 2;
+            int workResult = Work(previousProof, newProof);
 
-            using SHA256 sha256 = SHA256.Create();
-            byte[] hashOperation = sha256.ComputeHash(BitConverter.GetBytes(toBeWork));
-            if (hashOperation[..4].ToString() == "0000")
+            byte[] hashOperation = computeHash(BitConverter.GetBytes(workResult));
+            string hash = Convert.ToHexString(hashOperation);
+            if (hash[..4] == "0000")
                 checkProof = true;
             else
                 newProof += 1;
         }
 
         return newProof;
+    }
+
+    private int Work(int arg1, int arg2)
+    {
+        return arg2 ^ 2 - arg1 ^ 2;
+    }
+
+    public bool IsBlockchainValid()
+    {
+        if (Chain.Count <= 1)
+            return true;
+
+        int blockIndex = 0;
+        IBlock previousBlock = Chain[blockIndex];
+        blockIndex++;
+
+        while (blockIndex < Chain.Count)
+        {
+            IBlock currentBlock = Chain[blockIndex];
+            if (currentBlock.PreviousHash != GetBlockHash(previousBlock))
+                return false;
+
+            int workResult = Work(previousBlock.Proof, currentBlock.Proof);
+
+            byte[] hashOperation = computeHash(BitConverter.GetBytes(workResult));
+            string hash = Convert.ToHexString(hashOperation);
+            if (hash[..4] != "0000")
+                return false;
+
+            previousBlock = currentBlock;
+            blockIndex++;
+        }
+        return true;
     }
 
 }

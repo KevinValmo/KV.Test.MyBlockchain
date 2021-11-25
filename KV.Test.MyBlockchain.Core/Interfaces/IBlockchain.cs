@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace KV.Test.MyBlockchain.Core.Interfaces;
 
 public interface IBlockchain
 {
-    IBlock GetPreviousBlock { get; }
+    IBlock PreviousBlock { get; }
+    List<IBlock> Chain { get; }
 
-    IBlock CreateBlock(ulong proof, HashCode previousHash);
-    ulong ProofOfWork(ulong previousProof);
+    IBlock CreateBlock(int proof, string previousHash);
+    string GetBlockHash(IBlock block);
+    int ProofOfWork(int previousProof);
+    bool IsBlockchainValid();
 }

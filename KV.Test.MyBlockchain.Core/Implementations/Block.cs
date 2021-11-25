@@ -7,6 +7,6 @@ public class Block : IBlock
 {
     public ulong Index { get; set; }
     public DateTime TimeStamp { get; set; }
-    public ulong Proof { get; set; }
-    public HashCode PreviousHash { get; set; }
+    public int Proof { get; set; }
+    public string PreviousHash { get; set; } = default!;
 }
