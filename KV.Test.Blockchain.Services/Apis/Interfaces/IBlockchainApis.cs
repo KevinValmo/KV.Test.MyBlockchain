@@ -1,4 +1,4 @@
-﻿namespace KV.Test.Blockchain.Services.Apis.Interfaces;
+﻿namespace KV.Test.MyBlockchain.Services.Apis.Interfaces;
 
 public interface IBlockchainApis : IApi
 {

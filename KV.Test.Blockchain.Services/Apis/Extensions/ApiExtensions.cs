@@ -1,14 +1,14 @@
-﻿using KV.Test.Blockchain.Services.Apis.Interfaces;
+﻿using KV.Test.MyBlockchain.Services.Apis.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
-namespace KV.Test.Blockchain.Services.Apis.Extensions;
+namespace KV.Test.MyBlockchain.Services.Apis.Extensions;
 
 public static class ApiExtensions
 {
-    public static void MapApis(this WebApplication app) 
+    public static void MapApis(this WebApplication app)
     {
         IEnumerable<IApi>? apis = app.Services.GetServices<IApi>();
 

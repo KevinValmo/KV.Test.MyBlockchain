@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KV.Test.Blockchain.Core\KV.Test.Blockchain.Core.csproj" />
+    <ProjectReference Include="..\KV.Test.Blockchain.Core\KV.Test.MyBlockchain.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,11 @@
-﻿using KV.Test.Blockchain.Core.Interfaces;
+﻿using KV.Test.MyBlockchain.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace KV.Test.Blockchain.Core.Implementations;
+namespace KV.Test.MyBlockchain.Core.Implementations;
 
-public class Blockchain: IBlockchain
+public class Blockchain : IBlockchain
 {
     public IBlockFactory<IBlock> BlockFactory { get; }
 
@@ -26,8 +26,8 @@ public class Blockchain: IBlockchain
 
         return block;
     }
-    
-    private List<IBlock> chain = new();
+
+    private readonly List<IBlock> chain = new();
 
     public IBlock GetPreviousBlock { get { return chain[^1]; } }
 
@@ -36,7 +36,7 @@ public class Blockchain: IBlockchain
         ulong newProof = 1;
         bool checkProof = false;
 
-        while(checkProof == false)
+        while (checkProof == false)
         {
             ulong toBeWork = newProof ^ 2 - previousProof ^ 2;
 

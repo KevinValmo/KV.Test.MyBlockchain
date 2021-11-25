@@ -1,13 +1,11 @@
-﻿using KV.Test.Blockchain.Core.Interfaces;
-using KV.Test.Blockchain.Services.Apis.Extensions;
-using KV.Test.Blockchain.Services.Apis.Interfaces;
+﻿using KV.Test.MyBlockchain.Core.Interfaces;
+using KV.Test.MyBlockchain.Services.Apis.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using System;
-using System.Collections.Generic;
 
-namespace KV.Test.Blockchain.Services.Apis;
+namespace KV.Test.MyBlockchain.Services.Apis;
 
 public class BlockchainApis : IBlockchainApis, IApi
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
 
-namespace KV.Test.Blockchain.Services.Apis.Interfaces;
+namespace KV.Test.MyBlockchain.Services.Apis.Interfaces;
 
 public interface IApi
 {

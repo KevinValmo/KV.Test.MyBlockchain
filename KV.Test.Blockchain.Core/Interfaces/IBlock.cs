@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KV.Test.Blockchain.Core.Interfaces;
+namespace KV.Test.MyBlockchain.Core.Interfaces;
 
 public interface IBlock
 {

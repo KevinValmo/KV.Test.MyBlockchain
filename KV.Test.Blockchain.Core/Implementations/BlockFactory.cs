@@ -1,7 +1,7 @@
-﻿using KV.Test.Blockchain.Core.Interfaces;
+﻿using KV.Test.MyBlockchain.Core.Interfaces;
 using System;
 
-namespace KV.Test.Blockchain.Core.Implementations;
+namespace KV.Test.MyBlockchain.Core.Implementations;
 
 public class BlockFactory : IBlockFactory<IBlock>
 {

@@ -1,13 +1,12 @@
-using KV.Test.Blockchain.Core.Implementations;
-using KV.Test.Blockchain.Core.Interfaces;
-using KV.Test.Blockchain.Services.Apis;
-using KV.Test.Blockchain.Services.Apis.Extensions;
-using KV.Test.Blockchain.Services.Apis.Interfaces;
+using KV.Test.MyBlockchain.Core.Implementations;
+using KV.Test.MyBlockchain.Core.Interfaces;
+using KV.Test.MyBlockchain.Services.Apis;
+using KV.Test.MyBlockchain.Services.Apis.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace KV.Test.Blockchain.Services.Boot;
+namespace KV.Test.MyBlockchain.Services.Boot;
 
 public class Startup
 {
@@ -18,7 +17,7 @@ public class Startup
         ConfigureServices(builder.Services);
 
         WebApplication? app = builder.Build();
-        
+
         ConfigureApplication(app);
 
         app.Run();
@@ -27,9 +26,9 @@ public class Startup
     public static void ConfigureServices(IServiceCollection services)
     {
         services.AddApi<BlockchainApis>();
-        
+
         services.AddTransient<IBlockFactory<IBlock>, BlockFactory>();
-        services.AddSingleton<IBlockchain, Core.Implementations.Blockchain>();
+        services.AddSingleton<IBlockchain, Blockchain>();
     }
 
     public static void ConfigureApplication(WebApplication app)
