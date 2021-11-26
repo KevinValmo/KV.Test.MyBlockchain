@@ -14,7 +14,6 @@ public class Blockchain : IBlockchain
     private readonly Func<byte[], byte[]> computeHash;
 
     public List<IBlock> Chain { get; private set; } = new();
-    public IBlock PreviousBlock { get { return Chain[^1]; } }
 
     public Blockchain(IBlockFactory<IBlock> blockFactory)
     {
@@ -24,19 +23,6 @@ public class Blockchain : IBlockchain
 
         // Genesis block
         CreateBlock(1, "0");
-    }
-
-    public string GetBlockHash(IBlock block)
-    {
-        string hash;
-
-        string serializedBlock = JsonSerializer.Serialize(block, jsonSerializerOptions);
-
-        byte[] hashBytes = computeHash(Encoding.Unicode.GetBytes(serializedBlock));
-
-        hash = Convert.ToHexString(hashBytes);
-
-        return hash;
     }
 
     public IBlock CreateBlock(int proof, string previousHash)
@@ -54,6 +40,8 @@ public class Blockchain : IBlockchain
         return block;
     }
 
+    public IBlock PreviousBlock { get { return Chain[^1]; } }
+
     public int ProofOfWork(int previousProof)
     {
         int newProof = 1;
@@ -61,7 +49,7 @@ public class Blockchain : IBlockchain
 
         while (checkProof == false)
         {
-            int workResult = Work(previousProof, newProof);
+            int workResult = Work(newProof, previousProof);
 
             byte[] hashOperation = computeHash(BitConverter.GetBytes(workResult));
             string hash = Convert.ToHexString(hashOperation);
@@ -74,9 +62,17 @@ public class Blockchain : IBlockchain
         return newProof;
     }
 
-    private int Work(int arg1, int arg2)
+    public string GetBlockHash(IBlock block)
     {
-        return arg2 ^ 2 - arg1 ^ 2;
+        string hash;
+
+        string serializedBlock = JsonSerializer.Serialize(block, jsonSerializerOptions);
+
+        byte[] hashBytes = computeHash(Encoding.Unicode.GetBytes(serializedBlock));
+
+        hash = Convert.ToHexString(hashBytes);
+
+        return hash;
     }
 
     public bool IsBlockchainValid()
@@ -91,10 +87,11 @@ public class Blockchain : IBlockchain
         while (blockIndex < Chain.Count)
         {
             IBlock currentBlock = Chain[blockIndex];
-            if (currentBlock.PreviousHash != GetBlockHash(previousBlock))
+            string previousBlockHash = GetBlockHash(previousBlock);
+            if (currentBlock.PreviousHash != previousBlockHash)
                 return false;
 
-            int workResult = Work(previousBlock.Proof, currentBlock.Proof);
+            int workResult = Work(currentBlock.Proof, previousBlock.Proof);
 
             byte[] hashOperation = computeHash(BitConverter.GetBytes(workResult));
             string hash = Convert.ToHexString(hashOperation);
@@ -107,4 +104,8 @@ public class Blockchain : IBlockchain
         return true;
     }
 
+    private int Work(int arg1, int arg2)
+    {
+        return arg1 ^ 2 - arg2 ^ 2;
+    }
 }

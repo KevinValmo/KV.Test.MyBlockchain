@@ -29,7 +29,8 @@ public class BlockchainApis : IBlockchainApis, IApi
     public IResult MineBlock()
     {
         IBlock previousBlock = _blockchain.PreviousBlock;
-        int proof = _blockchain.ProofOfWork(previousBlock.Proof);
+        int previousProof = previousBlock.Proof;
+        var proof = _blockchain.ProofOfWork(previousProof);
         string previousHash = _blockchain.GetBlockHash(previousBlock);
 
         IBlock newBlock = _blockchain.CreateBlock(proof, previousHash);
